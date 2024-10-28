@@ -13,6 +13,9 @@
         android:theme="@style/Theme.Seminar4"
         tools:targetApi="31">
         <activity
+            android:name=".ListaElicoptere"
+            android:exported="false" />
+        <activity
             android:name=".AdaugareActivitate"
             android:exported="false" />
         <activity

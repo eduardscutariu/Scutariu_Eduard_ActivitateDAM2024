@@ -1,4 +1,21 @@
 <resources>
     <string name="app_name">seminar4</string>
     <string name="nume_aplicatie">Formular date elicopter</string>
+    <string name="numele_producatorului">Numele producatorului</string>
+    <string name="pretul_aeronavei">Pretul aeronavei</string>
+    <string name="autonomie_mile">Autonomie (mile)</string>
+    <string name="numar_locuri">Numar locuri</string>
+    <string name="formular_elicoptere">Formular elicoptere</string>
+    <string name="data_fabricatiei">Data fabricatiei</string>
+    <string name="tip_aeronava">Tip aeronava</string>
+    <string name="pasageri">Pasageri</string>
+    <string name="cargo">Cargo</string>
+    <string name="militara">Militara</string>
+    <string name="functional">Functional</string>
+    <string name="adauga_elicopter">Adauga elicopter</string>
+    <string name="lista_elicoptere">Lista elicoptere</string>
+    <string-array name="stare">
+        <item>nou</item>
+        <item>utilizat</item>
+    </string-array>
 </resources>

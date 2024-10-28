@@ -1,33 +1,32 @@
 package com.example.seminar4;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 
 import java.util.Date;
 
-public class Elicopter {
+public class Elicopter implements Parcelable
+{
     private String producator;
     private float pret;
     private float autonomie_Mile;
     private int numarLocuri;
     private Date dataFabricatiei;
-
-    private String culoare;
-
     private boolean nou;
 //
 
-    public Elicopter(String producator, float pret, float autonomie_Mile, int numarLocuri, Date dataFabricatiei, String culoare, boolean nou) {
+    public Elicopter(String producator, float pret, float autonomie_Mile, int numarLocuri, Date dataFabricatiei, boolean nou) {
         this.producator = producator;
         this.pret = pret;
         this.autonomie_Mile = autonomie_Mile;
         this.numarLocuri = numarLocuri;
         this.dataFabricatiei = dataFabricatiei;
-        this.culoare = culoare;
         this.nou = nou;
     }
 
     public Elicopter() {
-        this.culoare = "negru";
         this.nou = false;
         this.producator = "necunoscut";
         this.pret = 0.0f;
@@ -37,6 +36,39 @@ public class Elicopter {
     }
 
 
+    protected Elicopter(Parcel in) {
+        producator = in.readString();
+        pret = in.readFloat();
+        autonomie_Mile = in.readFloat();
+        numarLocuri = in.readInt();
+        nou = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(producator);
+        dest.writeFloat(pret);
+        dest.writeFloat(autonomie_Mile);
+        dest.writeInt(numarLocuri);
+        dest.writeByte((byte) (nou ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<Elicopter> CREATOR = new Creator<Elicopter>() {
+        @Override
+        public Elicopter createFromParcel(Parcel in) {
+            return new Elicopter(in);
+        }
+
+        @Override
+        public Elicopter[] newArray(int size) {
+            return new Elicopter[size];
+        }
+    };
 
     public String getProducator() {
         return producator;
