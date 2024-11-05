@@ -93,6 +93,32 @@ public class Elicopter implements Parcelable
         return dataFabricatiei;
     }
 
+    public boolean isNou() {
+        return nou;
+    }
+
+    public void setNou(boolean nou) {
+        this.nou = nou;
+    }
+    public void setTip(String tip)
+    {
+        if (tip.equals("nou"))
+            this.nou=true;
+        else
+            this.nou=false;
+
+    }
+
+    public String getTip()
+    {
+       if (nou)
+        return "nou";
+       else
+        return "utilizat";
+
+    }
+
+
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Elicopter{");

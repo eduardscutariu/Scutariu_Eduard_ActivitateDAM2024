@@ -67,5 +67,9 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), elicopter.toString(), Toast.LENGTH_SHORT).show();
             }
         }
+
+
     }
+
+
 }
