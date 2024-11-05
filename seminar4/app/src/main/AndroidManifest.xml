@@ -16,7 +16,7 @@
             android:name=".ListaElicoptere"
             android:exported="false" />
         <activity
-            android:name=".AdaugareActivitate"
+            android:name=".AdaugareElicopter"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

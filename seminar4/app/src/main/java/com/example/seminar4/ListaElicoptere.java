@@ -31,6 +31,11 @@ public class ListaElicoptere extends AppCompatActivity {
 
         Intent it=getIntent();
         List<Elicopter> elicoptere=it.getParcelableArrayListExtra("elicoptere");
+        if (elicoptere == null) {
+            Toast.makeText(this, "Lista de elicoptere este goală sau nu a fost primită corect.", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, elicoptere.toString(), Toast.LENGTH_SHORT).show();
+        }
         ListView lv=findViewById(R.id.lista);
 
         ArrayAdapter<Elicopter> adapter=new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1,elicoptere);

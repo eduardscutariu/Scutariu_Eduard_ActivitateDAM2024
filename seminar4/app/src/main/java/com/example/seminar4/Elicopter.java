@@ -41,8 +41,10 @@ public class Elicopter implements Parcelable
         pret = in.readFloat();
         autonomie_Mile = in.readFloat();
         numarLocuri = in.readInt();
+        dataFabricatiei=(java.util.Date)in.readSerializable();
         nou = in.readByte() != 0;
     }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
@@ -50,6 +52,7 @@ public class Elicopter implements Parcelable
         dest.writeFloat(pret);
         dest.writeFloat(autonomie_Mile);
         dest.writeInt(numarLocuri);
+        dest.writeSerializable(dataFabricatiei);
         dest.writeByte((byte) (nou ? 1 : 0));
     }
 
@@ -98,6 +101,7 @@ public class Elicopter implements Parcelable
         sb.append(", autonomie_Mile=").append(autonomie_Mile);
         sb.append(", numarLocuri=").append(numarLocuri);
         sb.append(", dataFabricatiei=").append(dataFabricatiei);
+        sb.append(", nou=").append(nou);
         sb.append('}');
         return sb.toString();
     }

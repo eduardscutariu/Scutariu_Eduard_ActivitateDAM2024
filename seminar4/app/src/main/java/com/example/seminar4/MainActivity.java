@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent it=new Intent(getApplicationContext(),AdaugareActivitate.class);
+                Intent it=new Intent(getApplicationContext(), AdaugareElicopter.class);
                 startActivityForResult(it,403);
             }
         });
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==403)
         {
-            if(requestCode==RESULT_OK)
+            if(resultCode==RESULT_OK)
             {
                 Elicopter elicopter=data.getParcelableExtra("elicopter");
                 elicoptere.add(elicopter);
