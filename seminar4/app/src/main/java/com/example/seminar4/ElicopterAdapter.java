@@ -63,7 +63,11 @@ public class ElicopterAdapter extends BaseAdapter {
         pretTV.setText(String.valueOf(elicopter.getPret()));
         autonomieTV.setText(String.valueOf(elicopter.getAutonomie_Mile()));
         numarLocuriTV.setText(String.valueOf(elicopter.getNumarLocuri()));
-        data_fabricatieiDP.setText(String.valueOf(elicopter.getDataFabricatiei().getYear())+"/"+elicopter.getDataFabricatiei().getMonth()+"/"+elicopter.getDataFabricatiei().getDay());
+        data_fabricatieiDP.setText(new StringBuilder()
+                .append(elicopter.getDataFabricatiei().getYear())
+                .append("/")
+                .append(elicopter.getDataFabricatiei().getMonth()+1)
+                .append("/").append(elicopter.getDataFabricatiei().getDate()).toString());
         tipTV.setText( elicopter.isNou() ? "Nou"  : "Utilzat");
 
         return v;
