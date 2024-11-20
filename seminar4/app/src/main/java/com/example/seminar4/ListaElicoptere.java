@@ -42,6 +42,8 @@ public class ListaElicoptere extends AppCompatActivity {
         }
         ListView lv=findViewById(R.id.lista);
 
+        
+
         //ArrayAdapter<Elicopter> adapter=new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1,elicoptere);
         adapter=new ElicopterAdapter(elicoptere,getApplicationContext(), R.layout.row_item);
         lv.setAdapter(adapter);

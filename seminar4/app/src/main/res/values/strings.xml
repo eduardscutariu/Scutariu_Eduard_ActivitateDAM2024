@@ -14,6 +14,7 @@
     <string name="functional">Functional</string>
     <string name="adauga_elicopter">Adauga elicopter</string>
     <string name="lista_elicoptere">Lista elicoptere</string>
+    <string name="imagini_elicoptere">Imagini elicoptere</string>
     <string-array name="stare">
         <item>nou</item>
         <item>utilizat</item>
