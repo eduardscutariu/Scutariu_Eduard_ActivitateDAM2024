@@ -15,8 +15,21 @@
     <string name="adauga_elicopter">Adauga elicopter</string>
     <string name="lista_elicoptere">Lista elicoptere</string>
     <string name="imagini_elicoptere">Imagini elicoptere</string>
+    <string name="vremea">Vremea</string>
+    <string name="oras">Oras</string>
+    <string name="cauta">Cauta</string>
+    <string name="key">Key</string>
+    <string name="key_of_the_city">key of the city</string>
+    <string name="max_min">Max/Min</string>
     <string-array name="stare">
         <item>nou</item>
         <item>utilizat</item>
+    </string-array>
+    <string-array name="zile">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
     </string-array>
 </resources>
