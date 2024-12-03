@@ -8,86 +8,80 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import java.util.Date;
 
 public class AdaugareElicopter extends AppCompatActivity {
 
+    private Elicopter elicopterExist;
+    private EditText etNumeProducator;
+    private EditText etPret;
+    private EditText etAutonomie;
+    private EditText etNumarLocuri;
+    private Spinner spTip;
+    private DatePicker dp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
         setContentView(R.layout.activity_adaugare_elicopter);
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
-            return insets;
-        });
 
-        Intent itGet=getIntent();
-        if(itGet.hasExtra("elicopter"))
-        {
-            Elicopter elicopterG=itGet.getParcelableExtra("elicopter");
+        etNumeProducator = findViewById(R.id.numeProducator);
+        etPret = findViewById(R.id.pret);
+        etAutonomie = findViewById(R.id.autonomie);
+        etNumarLocuri = findViewById(R.id.numarLocuri);
+        spTip = findViewById(R.id.tip);
+        dp = findViewById(R.id.data);
 
-            EditText etNumeProducatorG=findViewById(R.id.numeProducator);
-            EditText etPretG=findViewById(R.id.pret);
-            EditText etAutonomieG=findViewById(R.id.autonomie);
-            EditText etNumarLocuriG=findViewById(R.id.numarLocuri);
-            Spinner spTipG=findViewById(R.id.tip);
-            DatePicker dpG= findViewById(R.id.data);
-
-            etNumeProducatorG.setText(elicopterG.getProducator());
-            etPretG.setText(String.valueOf(elicopterG.getPret()));
-            etAutonomieG.setText(String.valueOf(elicopterG.getAutonomie_Mile()));
-            etNumarLocuriG.setText(String.valueOf(elicopterG.getNumarLocuri()));
-            spTipG.setSelection(elicopterG.isNou() ? 0:1);
-            dpG.init(elicopterG.getDataFabricatiei().getYear(),
-                    elicopterG.getDataFabricatiei().getMonth(),
-                    elicopterG.getDataFabricatiei().getDay(),
-                    null);
-
-            Toast.makeText(this, dpG.toString(), Toast.LENGTH_SHORT).show();
-
-
+        Intent intent = getIntent();
+        if (intent.hasExtra("elicopter")) {
+            elicopterExist = intent.getParcelableExtra("elicopter");
+            populateFields(elicopterExist);
         }
 
-        Button salvareBtn=findViewById(R.id.button);
-        salvareBtn.setOnClickListener((view) ->
-        {
-            EditText etNumeProducator=findViewById(R.id.numeProducator);
-            String numeProducator=etNumeProducator.getText().toString();
+        Button salvareBtn = findViewById(R.id.button);
+        salvareBtn.setOnClickListener(view -> saveElicopter());
+    }
 
-            EditText etPret=findViewById(R.id.pret);
-            float pret= Float.parseFloat((etPret.getText().toString()));
+    private void populateFields(Elicopter elicopter) {
+        etNumeProducator.setText(elicopter.getProducator());
+        etPret.setText(String.valueOf(elicopter.getPret()));
+        etAutonomie.setText(String.valueOf(elicopter.getAutonomie_Mile()));
+        etNumarLocuri.setText(String.valueOf(elicopter.getNumarLocuri()));
+        spTip.setSelection(elicopter.isNou() ? 0 : 1);
 
-            EditText etAutonomie=findViewById(R.id.autonomie);
-            float autonomie= Float.parseFloat(etAutonomie.getText().toString());
+        Date dataFabricatie = elicopter.getDataFabricatiei();
+        dp.updateDate(dataFabricatie.getYear() , dataFabricatie.getMonth(), dataFabricatie.getDate());
+    }
 
-            EditText etNumarLocuri=findViewById(R.id.numarLocuri);
-            int numarLocuri= Integer.parseInt(etNumarLocuri.getText().toString());
+    private void saveElicopter() {
+        String numeProducator = etNumeProducator.getText().toString();
+        float pret = Float.parseFloat(etPret.getText().toString());
+        float autonomie = Float.parseFloat(etAutonomie.getText().toString());
+        int numarLocuri = Integer.parseInt(etNumarLocuri.getText().toString());
+        boolean nou = spTip.getSelectedItem().toString().equals("nou");
+        Date dataFabricatie = new Date(dp.getYear() , dp.getMonth(), dp.getDayOfMonth());
 
-            Spinner spTip=findViewById(R.id.tip);
-            boolean nou;
-            nou= spTip.getSelectedItem().toString().contentEquals("nou");
+        if (elicopterExist != null) {
+            elicopterExist.setProducator(numeProducator);
+            elicopterExist.setPret(pret);
+            elicopterExist.setAutonomie_Mile(autonomie);
+            elicopterExist.setNumarLocuri(numarLocuri);
+            elicopterExist.setNou(nou);
+            elicopterExist.setDataFabricatiei(dataFabricatie);
 
-            DatePicker dp= findViewById(R.id.data);
-            Date data=new Date(dp.getYear(),dp.getMonth(),dp.getDayOfMonth());
-            Elicopter elicopter=new Elicopter(numeProducator,pret,autonomie,numarLocuri,data,nou);
+            Intent resultIntent = new Intent();
+            resultIntent.putExtra("elicopter", elicopterExist);
+            setResult(RESULT_OK, resultIntent);
+        } else {
+            Elicopter elicopterNou = new Elicopter(numeProducator, pret, autonomie, numarLocuri, dataFabricatie, nou);
 
-
-            Intent it=new Intent();
-            it.putExtra("elicopter",elicopter);
-            setResult(RESULT_OK,it);
-            finish();
-
-
-        });
-
-
+            new Thread(() -> {
+                ElicopterDatabase.getInstance(this).elicopterDAO().insert(elicopterNou);
+                runOnUiThread(() -> Toast.makeText(this, "Elicopter salvat!", Toast.LENGTH_SHORT).show());
+            }).start();
+        }
+        finish();
     }
 }

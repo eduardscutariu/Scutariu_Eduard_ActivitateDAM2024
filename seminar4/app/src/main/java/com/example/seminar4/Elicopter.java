@@ -4,18 +4,23 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import androidx.annotation.NonNull;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.room.TypeConverters;
 
 import java.util.Date;
-
+@Entity(tableName = "TabelElicoptere")
 public class Elicopter implements Parcelable
 {
+    @PrimaryKey
+    @NonNull
     private String producator;
     private float pret;
     private float autonomie_Mile;
     private int numarLocuri;
+    @TypeConverters(ConversieDateToLong.class)
     private Date dataFabricatiei;
     private boolean nou;
-//
 
     public Elicopter(String producator, float pret, float autonomie_Mile, int numarLocuri, Date dataFabricatiei, boolean nou) {
         this.producator = producator;
@@ -35,6 +40,17 @@ public class Elicopter implements Parcelable
         this.dataFabricatiei = new Date();
     }
 
+    public void setPret(float pret) {
+        this.pret = pret;
+    }
+
+    public void setAutonomie_Mile(float autonomie_Mile) {
+        this.autonomie_Mile = autonomie_Mile;
+    }
+
+    public void setNumarLocuri(int numarLocuri) {
+        this.numarLocuri = numarLocuri;
+    }
 
     protected Elicopter(Parcel in) {
         producator = in.readString();
@@ -77,8 +93,16 @@ public class Elicopter implements Parcelable
         return producator;
     }
 
+    public void setProducator(@NonNull String producator) {
+        this.producator = producator;
+    }
+
     public float getPret() {
         return pret;
+    }
+
+    public void setDataFabricatiei(Date dataFabricatiei) {
+        this.dataFabricatiei = dataFabricatiei;
     }
 
     public float getAutonomie_Mile() {

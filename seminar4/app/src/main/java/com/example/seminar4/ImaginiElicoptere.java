@@ -79,11 +79,11 @@ public class ImaginiElicoptere extends AppCompatActivity {
                     @Override
                     public void run() {
                         listaImagini=new ArrayList<>();
-                        listaImagini.add(new Imagine("Elicopter 1",imagini.get(0),"https://ro.wikipedia.org/wiki/Elicopter"));
-                        listaImagini.add(new Imagine("Elicopter 2",imagini.get(1),"https://ro.wikipedia.org/wiki/Elicopter"));
-                        listaImagini.add(new Imagine("Elicopter 3",imagini.get(2),"https://ro.wikipedia.org/wiki/Elicopter"));
-                        listaImagini.add(new Imagine("Elicopter 4",imagini.get(3),"https://ro.wikipedia.org/wiki/Elicopter"));
-                        listaImagini.add(new Imagine("Elicopter 5",imagini.get(4),"https://ro.wikipedia.org/wiki/Elicopter"));
+                        listaImagini.add(new Imagine("Elicopter 1",imagini.get(0),"https://inchirierielicopter.ro/"));
+                        listaImagini.add(new Imagine("Elicopter 2",imagini.get(1),"https://inchirierielicopter.ro/"));
+                        listaImagini.add(new Imagine("Elicopter 3",imagini.get(2),"https://inchirierielicopter.ro/"));
+                        listaImagini.add(new Imagine("Elicopter 4",imagini.get(3),"https://inchirierielicopter.ro/"));
+                        listaImagini.add(new Imagine("Elicopter 5",imagini.get(4),"https://inchirierielicopter.ro/"));
 
                         ListView lw=findViewById(R.id.listaImagini);
                         ImageAdapter adapter=new ImageAdapter(listaImagini,getApplicationContext(), R.layout.row_image);
