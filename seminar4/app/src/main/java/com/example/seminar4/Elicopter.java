@@ -155,5 +155,16 @@ public class Elicopter implements Parcelable
         sb.append('}');
         return sb.toString();
     }
+
+    public String getKey()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.producator);
+        sb.append(this.pret);
+        sb.append(this.dataFabricatiei);
+
+        return  sb.toString();
+    }
+
 }
 

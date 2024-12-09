@@ -1,23 +1,27 @@
 package com.example.seminar4;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
 
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class ListaElicoptere extends AppCompatActivity {
     private int idModificat = -1;
     private ElicopterAdapter adapter;
     private List<Elicopter> elicoptere;
     private ElicopterDatabase db;
+    private final Executor executor = Executors.newSingleThreadExecutor();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,10 +30,10 @@ public class ListaElicoptere extends AppCompatActivity {
 
         db = Room.databaseBuilder(getApplicationContext(), ElicopterDatabase.class, "TabelElicoptere").build();
 
-        new Thread(() -> {
+        executor.execute(() -> {
             elicoptere = db.elicopterDAO().getAll();
             runOnUiThread(this::updateListView);
-        }).start();
+        });
 
         ListView lv = findViewById(R.id.lista);
 
@@ -40,13 +44,24 @@ public class ListaElicoptere extends AppCompatActivity {
             startActivityForResult(intentModifica, 209);
         });
 
-        lv.setOnItemLongClickListener((adapterView, view, position, id) -> {
-            new Thread(() -> {
-                db.elicopterDAO().delete(elicoptere.get(position));
-                elicoptere.remove(position);
-                runOnUiThread(() -> adapter.notifyDataSetChanged());
-            }).start();
-            return true;
+//        lv.setOnItemLongClickListener((adapterView, view, position, id) -> {
+//            executor.execute(() -> {
+//                db.elicopterDAO().delete(elicoptere.get(position));
+//                elicoptere.remove(position);
+//                runOnUiThread(() -> adapter.notifyDataSetChanged());
+//            });
+//            return true;
+//        });
+
+        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                SharedPreferences sp= getSharedPreferences("obiecte",MODE_PRIVATE);
+                SharedPreferences.Editor editor=sp.edit();
+                editor.putString(elicoptere.get(i).getKey(),elicoptere.get(i).toString());
+                editor.commit();
+                return false;
+            }
         });
     }
 
@@ -56,14 +71,15 @@ public class ListaElicoptere extends AppCompatActivity {
         if (resultCode == RESULT_OK && requestCode == 209 && data != null) {
             Elicopter elicopterModificat = data.getParcelableExtra("elicopter");
             if (elicopterModificat != null) {
-                new Thread(() -> {
+                executor.execute(() -> {
                     db.elicopterDAO().update(elicopterModificat);
                     elicoptere.set(idModificat, elicopterModificat);
                     runOnUiThread(() -> adapter.notifyDataSetChanged());
-                }).start();
+                });
             }
         }
     }
+
     private void updateListView() {
         ListView lv = findViewById(R.id.lista);
         adapter = new ElicopterAdapter(elicoptere, this, R.layout.row_item);

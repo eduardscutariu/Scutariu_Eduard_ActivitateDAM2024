@@ -21,6 +21,7 @@
     <string name="key">Key</string>
     <string name="key_of_the_city">key of the city</string>
     <string name="max_min">Max/Min</string>
+    <string name="lista_sharedpreferences">Lista SharedPreferences</string>
     <string-array name="stare">
         <item>nou</item>
         <item>utilizat</item>

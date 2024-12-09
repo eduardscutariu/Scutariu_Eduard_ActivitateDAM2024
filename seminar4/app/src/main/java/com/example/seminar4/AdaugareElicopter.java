@@ -2,6 +2,8 @@ package com.example.seminar4;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -10,7 +12,14 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Date;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 public class AdaugareElicopter extends AppCompatActivity {
 
@@ -21,6 +30,7 @@ public class AdaugareElicopter extends AppCompatActivity {
     private EditText etNumarLocuri;
     private Spinner spTip;
     private DatePicker dp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +51,8 @@ public class AdaugareElicopter extends AppCompatActivity {
         }
 
         Button salvareBtn = findViewById(R.id.button);
-        salvareBtn.setOnClickListener(view -> saveElicopter());
+//        salvareBtn.setOnClickListener(view -> saveElicopter());
+        salvareBtn.setOnClickListener(view -> saveElicopterTXT());
     }
 
     private void populateFields(Elicopter elicopter) {
@@ -54,6 +65,44 @@ public class AdaugareElicopter extends AppCompatActivity {
         Date dataFabricatie = elicopter.getDataFabricatiei();
         dp.updateDate(dataFabricatie.getYear() , dataFabricatie.getMonth(), dataFabricatie.getDate());
     }
+
+
+    private void saveElicopterTXT()
+    {
+        Executor executor = Executors.newSingleThreadExecutor();
+        Handler handler=new Handler(Looper.myLooper());
+
+
+        String numeProducator = etNumeProducator.getText().toString();
+        float pret = Float.parseFloat(etPret.getText().toString());
+        float autonomie = Float.parseFloat(etAutonomie.getText().toString());
+        int numarLocuri = Integer.parseInt(etNumarLocuri.getText().toString());
+        boolean nou = spTip.getSelectedItem().toString().equals("nou");
+        Date dataFabricatie = new Date(dp.getYear() , dp.getMonth(), dp.getDayOfMonth());
+
+        Elicopter elicopter = new Elicopter(numeProducator, pret, autonomie, numarLocuri, dataFabricatie, nou);
+
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                try(FileOutputStream file=openFileOutput("obiecteTxt.txt",MODE_APPEND);
+                    OutputStreamWriter writer= new OutputStreamWriter(file);
+                    BufferedWriter bf=new BufferedWriter(writer)) {
+
+                    bf.write(elicopter.toString());
+
+                } catch (FileNotFoundException e) {
+                    throw new RuntimeException(e);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        });
+
+        finish();
+    }
+
 
     private void saveElicopter() {
         String numeProducator = etNumeProducator.getText().toString();
@@ -81,6 +130,7 @@ public class AdaugareElicopter extends AppCompatActivity {
                 ElicopterDatabase.getInstance(this).elicopterDAO().insert(elicopterNou);
                 runOnUiThread(() -> Toast.makeText(this, "Elicopter salvat!", Toast.LENGTH_SHORT).show());
             }).start();
+
         }
         finish();
     }
