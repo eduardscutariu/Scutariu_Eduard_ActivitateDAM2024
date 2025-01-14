@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "673851334625",
+    "firebase_url": "https://dam-14ian-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "dam-14ian",
+    "storage_bucket": "dam-14ian.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:673851334625:android:186110dbe35d28ca9e3ca0",
+        "android_client_info": {
+          "package_name": "com.example.seminar4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBQ1cAf2K5zE6yJ94m3OyZ8TjuFZpG3Zfs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,8 +1,11 @@
 package com.example.seminar4;
 
+import static android.content.ContentValues.TAG;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -10,6 +13,12 @@ import android.widget.ListView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.room.Room;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -22,6 +31,7 @@ public class ListaElicoptere extends AppCompatActivity {
     private List<Elicopter> elicoptere;
     private ElicopterDatabase db;
     private final Executor executor = Executors.newSingleThreadExecutor();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,8 +91,30 @@ public class ListaElicoptere extends AppCompatActivity {
     }
 
     private void updateListView() {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("elicoptere");
+
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                elicoptere.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Elicopter elicopter = snapshot.getValue(Elicopter.class);
+                    elicoptere.add(elicopter);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.w(TAG, "Failed to read value.", error.toException());
+            }
+        });
+
         ListView lv = findViewById(R.id.lista);
         adapter = new ElicopterAdapter(elicoptere, this, R.layout.row_item);
         lv.setAdapter(adapter);
     }
+
+
 }

@@ -9,6 +9,7 @@ import androidx.room.TypeConverters;
 
 @Database(entities = {Elicopter.class}, version = 1)
 @TypeConverters({ConversieDateToLong.class})
+
 public abstract class ElicopterDatabase extends RoomDatabase {
     public abstract ElicopterDAO elicopterDAO();
 

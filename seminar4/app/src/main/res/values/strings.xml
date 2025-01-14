@@ -22,6 +22,7 @@
     <string name="key_of_the_city">key of the city</string>
     <string name="max_min">Max/Min</string>
     <string name="lista_sharedpreferences">Lista SharedPreferences</string>
+    <string name="adauga_in_firebase">Adauga in Firebase</string>
     <string-array name="stare">
         <item>nou</item>
         <item>utilizat</item>

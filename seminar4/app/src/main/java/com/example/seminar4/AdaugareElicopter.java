@@ -5,12 +5,17 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.Firebase;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -100,6 +105,18 @@ public class AdaugareElicopter extends AppCompatActivity {
             }
         });
 
+        //add to firebase
+        CheckBox cb=findViewById(R.id.checkBox);
+        if(cb.isChecked())
+        {
+            if(cb.isChecked()) {
+                FirebaseDatabase db = FirebaseDatabase.getInstance("https://dam-14ian-default-rtdb.europe-west1.firebasedatabase.app/");
+                DatabaseReference myRef = db.getReference("elicoptere").child(elicopter.getProducator());
+                myRef.setValue(elicopter);
+            }
+
+        }
+
         finish();
     }
 
@@ -134,4 +151,6 @@ public class AdaugareElicopter extends AppCompatActivity {
         }
         finish();
     }
+
+
 }
